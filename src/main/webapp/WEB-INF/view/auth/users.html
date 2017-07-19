@@ -1,0 +1,168 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon"><i class="fa fa-table"></i></span>
+					<h2>用户管理</h2>
+				</header>
+				<div>
+					<div class="jarviswidget-editbox"></div>
+					<div class="widget-body ">
+						<div class="table-responsive">
+							<table class="table table-bordered" id="main-table">
+								
+							</table>
+						</div>
+
+						<input id="page-num" type="hidden" value="1" /> 
+						<input id="page-size" type="hidden" value="10" />
+						<ul id="pager" class="pagination"></ul>
+					</div>
+					<!-- end widgetContent -->
+
+				</div>
+				<!-- end jarvisWidgetBody -->
+
+			</div>
+			<!-- end widget -->
+			<!-- end jarvisWidget -->
+
+		</article>
+		<!-- end widgetGridCol -->
+
+	</div>
+	<!-- end widgetGridRow -->
+
+</section>
+<!-- end widgetGrid -->
+
+<script id="user_info_tpl" type="text/html">
+	<form action="" id="user-form" class="smart-form" novalidate="novalidate" style="overflow-x: hidden;" onsubmit="return false;">
+		<fieldset>
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">用户名称：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="input"> 
+						<input type="text" id="name" name="name" value="{{user.name}}" placeholder="用户名称">
+						<input type="hidden" id="id" name="id" value="{{user.id}}">
+					</label>
+				</section>
+			</div>
+
+			{{if user.id == null || user.id == 0}}
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">用户密码：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="input"> 
+						<input type="text" id="password" name="password" value="" placeholder="用户密码">
+					</label>
+				</section>
+			</div>
+			{{/if}}
+
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">用户状态：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="select"> <select id="status" name="status">
+						<option value="1" {{if user.status == 1}}selected{{/if}}>启用</option>
+						<option value="0" {{if user.status == 0}}selected{{/if}}>不启用</option>
+						<option value="2" {{if user.status == 2}}selected{{/if}}>锁定</option>
+					</select> <i></i>
+					</label>
+				</section>
+			</div>
+			
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">所在部门：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="select"> <select id="departmentId" name="departmentId" 
+							{{if user.roleIds == null || user.roleIds == 0}}
+								onChange="User.ShowDepartmentRoles($('#departmentId').val(),[])"
+							{{else}}
+								onChange="User.ShowDepartmentRoles($('#departmentId').val(),'{{user.roleIds.toString()}}'.split(','))"
+							{{/if}}
+					>
+						{{each department as value i}}
+						<option value="{{value.id}}" {{if value.id == user.departmentId}}selected{{/if}}>{{value.name}}</option>
+						{{/each}}
+					</select> <i></i>
+					</label>
+				</section>
+			</div>
+
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">排序编号：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="input"> 
+						<input type="text" id="sort" name="sort" value="{{user.sort}}" placeholder="排序编号" 
+							onKeyPress="if((event.keyCode<48 || event.keyCode>57) && event.keyCode!=46 || /\.\d\d$/.test(value))event.returnValue=false">
+					</label>
+				</section>
+			</div>
+			
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">备注信息：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="input"> 
+						<input type="text" id="remarks" name="remarks" value="{{user.remarks}}" placeholder="备注信息">
+					</label>
+				</section>
+			</div>
+
+		</fieldset>
+		
+		<fieldset>
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">拥有角色：</label>
+				</section>
+				<section class="col col-9 " id="departmentRoles" style="padding-top:5px;height:100px;overflow-y:auto;">
+					
+				</section>
+			</div>
+		</fieldset>
+
+		<footer>
+			<button type="button" class="btn"onClick="layer.close(layer.index);">取消</button>
+			<button type="submit" class="btn btn-primary" onClick="
+				{{if user.id != null}}
+					User.UpdateInfo($('#user-form').serialize())
+				{{else}}
+					User.AddInfo($('#user-form').serialize())
+				{{/if}}
+			">保存</button>
+		</footer>
+	</form>
+</script>
+<script id="department_role_tpl" type="text/html">
+{{each role as value i}}
+	<label class="input col col-6"> 
+		<label class="checkbox">
+			<input id="roleIds" name="roleIds" type="checkbox" placeholder="" value="{{value.id}}" {{if roleIds.indexOf(value.id.toString()) >= 0 || roleIds.indexOf(value.id) >= 0}}checked{{/if}}>
+			<i></i> {{value.name}} 
+		</label>
+	</label>
+{{/each}}
+</script>
+
+<script src="js/auth/user.js"></script>
+<script src="js/auth/department.js"></script>
+<script src="js/auth/role.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	User.List();
+});
+</script>

@@ -1,0 +1,155 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon"><i class="fa fa-table"></i></span>
+					<h2>部门管理</h2>
+				</header>
+				<div>
+					<div class="jarviswidget-editbox"></div>
+					<div class="widget-body ">
+						<!-- 左侧树导航 -->
+						<div style="float:left;overflow-x:auto;" id="department-tree" class="ztree">
+							
+						</div>
+						
+						<!-- 右侧表格详情 -->
+						<div class="table-responsive" style="margin-left:200px;">
+							<table class="table table-bordered" id="main-table">
+								
+							</table>
+						</div>
+
+						<input id="page-num" type="hidden" value="1" /> 
+						<input id="page-size" type="hidden" value="10" />
+						<ul id="pager" class="pagination"></ul>
+					</div>
+					<!-- end widgetContent -->
+
+				</div>
+				<!-- end jarvisWidgetBody -->
+
+			</div>
+			<!-- end widget -->
+			<!-- end jarvisWidget -->
+
+		</article>
+		<!-- end widgetGridCol -->
+
+	</div>
+	<!-- end widgetGridRow -->
+
+</section>
+<!-- end widgetGrid -->
+
+<script id="department_tpl" type="text/html">
+	<form action="" id="department-form" class="smart-form" novalidate="novalidate" style="overflow-x: hidden;" onsubmit="return false;">
+		<fieldset>
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">部门名称：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="input"> 
+						<input type="text" id="name" name="name" value="{{department.name}}" placeholder="部门名称">
+						<input type="hidden" id="id" name="id" value="{{department.id}}">
+					</label>
+				</section>
+			</div>
+
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">部门状态：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="select"> <select id="status" name="status">
+						<option value="1" {{if department.status == 1}}selected{{/if}}>启用</option>
+						<option value="0" {{if department.status == 0}}selected{{/if}}>不可用</option>
+					</select> <i></i>
+					</label>
+				</section>
+			</div>
+			
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">上级部门：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="select"> <select id="parentId" name="parentId">
+						{{each parentDepartment as value i}}
+							<option value="{{value.id}}" {{if value.id == department.parentId}}selected{{/if}}>{{value.name}}</option>
+						{{/each}}
+					</select> <i></i>
+					</label>
+				</section>
+			</div>
+			
+			<div class="row">
+				<section class="col col-3 ">
+					<label class="label col col-12">备注信息：</label>
+				</section>
+				<section class="col col-9 ">
+					<label class="input"> 
+						<input type="text" id="remarks" name="remarks" value="{{department.remarks}}" placeholder="备注信息">
+					</label>
+				</section>
+			</div>
+
+		</fieldset>
+
+		<footer>
+			<button type="button" class="btn"onClick="layer.close(layer.index);">取消</button>
+			<button type="submit" class="btn btn-primary" onClick="
+				{{if department.id != null}}
+					Department.Update($('#department-form').serialize())
+				{{else}}
+					Department.Add($('#department-form').serialize())
+				{{/if}}
+			">保存</button>
+		</footer>
+	</form>
+</script>
+
+<script id="roles_tpl" type="text/html">
+<form action="" id="role-form" class="smart-form" novalidate="novalidate" style="overflow-x: hidden;" onsubmit="return false;">
+	<fieldset>
+		<div class="row">
+			<input type="hidden" id="departmentId" name="departmentId" value="{{department.id}}">
+			{{each departmentLevel as value i}}
+				<div class="col col-2" style="min-height:45px">
+					<label class="" style="padding-top:5px;"><b>{{value.name}}</b></lable>
+				</div>
+				<div class="col col-10">
+					{{if value.owenrRoles == null || value.owenrRoles.size == 0}}
+						无可用角色
+					{{/if}}
+					{{each value.owenrRoles as owerRole j}}
+					<label class="input col col-4"> 
+						<label class="checkbox">
+							<input id="roleIds" name="roleIds" type="checkbox" placeholder="" value="{{owerRole.id}}" {{if department.roleIds != null &&(department.roleIds.indexOf(owerRole.id.toString()) >= 0 || department.roleIds.indexOf(owerRole.id) >= 0)}}checked{{/if}}>
+							<i></i> {{owerRole.name}} 
+						</label>
+					</label>
+					{{/each}}
+				</div>
+				<hr />
+			{{/each}}
+		</div>
+	</fieldset>
+	<footer>
+		<button type="button" class="btn"onClick="layer.close(layer.index);">取消</button>
+		<button type="submit" class="btn btn-primary" onClick="Department.UpdateRole($('#role-form').serialize())">保存</button>
+	</footer>
+</form>
+</script>
+
+<script src="js/auth/department.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#department-tree').departmentZtree({'callback':zTreeOnClick});
+});
+function zTreeOnClick(event, treeId, treeNode) {
+	Department.List({'parentId':treeNode.id});
+}
+</script>

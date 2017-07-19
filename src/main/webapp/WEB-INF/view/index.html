@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8">
+		<title>Cramer</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<!-- 插件样式 -->
+		<link rel="stylesheet" type="text/css" media="screen" href="assets/plugins/LayerUI/css/layui.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="assets/plugins/ZTree/css/metroStyle/metroStyle.css">
+		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+		<!-- 基本样式 -->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
+		<!-- 定制样式 -->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/app.css">
+	</head>
+
+	<body>
+
+		<header id="header">
+			<div id="logo-group">
+				<span id="logo"> <img src="img/logo.png" alt="Cramer"> </span>
+			</div>
+
+			<div class="pull-right">
+				<div id="hide-menu" class="btn-header pull-right">
+					<span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+				</div>
+
+				<div id="logout" class="btn-header transparent pull-right">
+					<span> <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="你确定要进行注销吗？"><i class="fa fa-sign-out"></i></a> </span>
+				</div>
+
+				<form action="#ajax/search.html" class="header-search pull-right">
+					<input id="search-fld" type="text" name="param" placeholder="搜索......">
+					<button type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+					<a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i class="fa fa-times"></i></a>
+				</form>
+
+				<div id="fullscreen" class="btn-header transparent pull-right">
+					<span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+				</div>
+
+			</div>
+		</header>
+
+		<aside id="left-panel">
+			<div class="login-info">
+				<span>
+					<a href="javascript:void(0);" id="show-shortcut">
+                        <img src="img/avatars/male.png" alt="me" class="online">
+						<span>wicks</span>
+						<!-- <i class="fa fa-angle-down"></i> -->
+					</a>
+				</span>
+			</div>
+
+			<nav>
+				<ul>
+					<li>
+						<a href="sys/platform" title="个人工作台"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">个人工作台</span></a>
+					</li>
+					<li class="auth" data-auth="[auth]">
+						<a href="#" title="权限管理"><i class="fa fa-lg fa-fw fa-drivers-license"></i> <span class="menu-item-parent">权限管理</span></a>
+							<ul>
+								<li class="auth" data-auth="[user]"><a href="auth/users"><i class="fa fa-lg fa-fw fa-user"></i> 用户管理</a></li>
+								<li class="auth" data-auth="[role]"><a href="auth/roles"><i class="fa fa-lg fa-fw fa-user"></i> 角色管理</a></li>
+								<li class="auth" data-auth="[department]"><a href="auth/departments"><i class="fa fa-lg fa-fw fa-user"></i> 部门管理</a></li>
+							</ul>
+					</li>
+					<li class="auth" data-auth="[msg]">
+						<a href="#" title="消息管理"><i class="fa fa-lg fa-fw fa-comments"></i> <span class="menu-item-parent">消息管理</span></a>
+							<ul>
+								<li class="auth" data-auth="[notify]"><a href="msg/notifys"><i class="fa fa-lg fa-fw fa-newspaper-o"></i> 通知公告</a></li>
+								<li class="auth" data-auth="[webmail]"><a href="msg/webmails"><i class="fa fa-lg fa-fw fa-inbox"></i> 站内信</a></li>
+							</ul>
+					</li>
+					<li class="auth" data-auth="[esb]">
+						<a href="#" title="总线服务"><i class="fa fa-lg fa-fw fa-cloud"></i> <span class="menu-item-parent">服务总线</span></a>
+							<ul>
+								<li class="auth" data-auth="[esb-invoke-sap]"><a href="esb/invokes"><i class="fa fa-lg fa-fw fa-cube"></i> 服务调用</a></li>
+								<li class="auth" data-auth="[esb-job]"><a href="esb/jobs"><i class="fa fa-lg fa-fw fa-clock-o"></i> 计划任务</a></li>
+								<li class="auth" data-auth="[esb-monitor]"><a href="esb/monitor"><i class="fa fa-lg fa-fw fa-dashboard"></i> 服务监控</a></li>
+								<li class="auth" data-auth="[esb-history]"><a href="esb/history"><i class="fa fa-lg fa-fw fa-list"></i> 历史记录</a></li>
+							</ul>
+					</li>
+					<li class="auth" data-auth="[sys]">
+						<a href="#" title="系统功能"><i class="fa fa-lg fa-fw fa-wrench"></i> <span class="menu-item-parent">系统功能</span></a>
+						<ul>
+							<li><a href="sys/dashboard" title="系统监控"><i class="fa fa-lg fa-fw fa-dashboard"></i> <span class="menu-item-parent">系统监控</span></a></li>
+							<li class="auth" data-auth="[log]"><a href="sys/logs" title="操作日志"><i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent">系统日志</span></a></li>
+							<li class="auth" data-auth="[statistic]"><a href="sys/statistics" title="使用统计"><i class="fa fa-lg fa-fw fa-bar-chart"></i> <span class="menu-item-parent">使用统计</span></a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" title="测试页面"><i class="fa fa-lg fa-fw fa-rocket"></i> <span class="menu-item-parent">测试页面</span></a>
+							<ul>
+								<li><a href="test/users"><i class="fa fa-lg fa-fw fa-plug"></i> 基本表格</a></li>
+								<li><a href="test/jqgrid"><i class="fa fa-lg fa-fw fa-plug"></i> JqGrid表格</a></li>
+								<li><a href="ajax/inbox.html" ><i class="fa fa-lg fa-fw fa-inbox"></i> <span class="menu-item-parent">收件箱</span><span class="badge pull-right inbox-badge">14</span></a></li>
+							</ul>
+					</li>
+					<li>
+						<a href="#" title="注销"><i class="fa fa-lg fa-fw fa-sign-out"></i> <span class="menu-item-parent">注销</span></a>
+					</li>
+				</ul>
+			</nav>
+		</aside>
+
+		<div id="main" role="main">
+			<div id="ribbon">
+				<span class="ribbon-button-alignment"> 
+					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> 刷新" data-html="true" data-reset-msg="确定要进行页面刷新吗?"><i class="fa fa-refresh"></i></span>
+				</span>
+
+				<ol class="breadcrumb">
+				</ol>
+			</div>
+
+			<div id="content">
+
+			</div>
+		</div>
+
+		<div class="page-footer">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<span class="txt-color-white">Cramer WebApp © 2017-2018</span>
+				</div>
+
+				<div class="col-xs-6 col-sm-6 text-right hidden-xs">
+						
+				</div>
+			</div>
+		</div>
+
+		<!-- 组件JS -->
+		<script src="js/jquery-1.10.2.js"></script>
+		<script src="js/jquery-ui-1.10.3.min.js"></script>
+		<script src="js/app.config.js"></script>
+		<script src="js/bootstrap/bootstrap.min.js"></script>
+		<script src="js/notification/SmartNotification.min.js"></script>
+		<script src="js/smartwidgets/jarvis.widget.min.js"></script>
+		<script src="js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+		<script src="js/plugin/sparkline/jquery.sparkline.min.js"></script>
+		<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
+		<script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+		<script src="js/plugin/select2/select2.min.js"></script>
+		<script src="js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+		<script src="js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+		<script src="js/plugin/fastclick/fastclick.min.js"></script>
+		<script src="assets/plugins/ZTree/js/jquery.ztree.core.min.js"></script>
+
+		<!-- todo预加载 -->
+		<script src="js/app.js"></script>
+		<script type="text/javascript" src="assets/plugins/JqGrid/js/i18n/grid.locale-cn.js"></script>
+		<script type="text/javascript" src="assets/plugins/JqGrid/js/jquery.jqGrid.src.js"></script>
+		<script src="assets/plugins/LayerUI/layui.js"></script>
+		<script src="assets/plugins/LayerUI/lay/modules/layer.js"></script>
+		
+		<!--[if IE 8]>
+			<h1>你的浏览器版本太旧，无法使用本系统的部分功能，建议下载新版的Chrome浏览器，地址：http://www.google.cn/chrome/browser/desktop/index.html</h1>
+		<![endif]-->
+		
+	</body>
+
+</html>
