@@ -116,6 +116,17 @@ function getTimeDesc(time){
 	}
 }
 
+//获得日期描述
+function getDateDesc(time){
+	if(time >0){
+		var newDate = new Date();
+		newDate.setTime(time);
+		return newDate.format('yyyy-MM-dd')
+	} else {
+		return "";
+	}
+}
+
 /*自定义组件*/
 (function ($) {  
     $.fn.departmentZtree = function (options) {
@@ -151,7 +162,14 @@ function getTimeDesc(time){
 })(jQuery);
 
 
+//获取参数
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var paramStr = window.location.href.substr(window.location.href.indexOf('?')+1,window.location.href.length);
+     var r = paramStr.match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
 
-
-
-
+//ESB地址
+var ESB_PATH = "http://localhost:16060/esb";

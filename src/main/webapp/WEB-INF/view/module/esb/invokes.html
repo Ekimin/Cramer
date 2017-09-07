@@ -86,7 +86,7 @@
 <script id="paramters_tpl" type="text/html">
 {{each params as value i}}
 <section>
-	<label class="label">参数：{{value}}</label>
+	<label class="label">{{paramNames[i]}}({{value}})</label>
 	<label class="input">
 		<input id="{{value}}" type="text" class="input-sm input-param">
 	</label>
@@ -99,6 +99,6 @@
 <script type="text/javascript">
 var services = [];
 $(document).ready(function(){
-	Invoke.getServices("SAP");
+	Invoke.getServices("");
 });
 </script>

@@ -79,7 +79,7 @@ User.List = function (){
             for ( var i = 0; i < ids.length; i++) {
               var cl = ids[i];
               be = "<a id=\"td-edit-"+cl+"\" style=\"padding-left:5px;padding-right:5px;\" href=\"javascript:User.OpenEdit('"+ cl + "');\">编辑</a>";
-              de = "<a id=\"td-del-"+cl+"\" style=\"padding-left:5px;padding-right:5px;\" href=\"javascript:delTableRow('"+cl+"');\">删除</a>";
+              de = "<a id=\"td-del-"+cl+"\" style=\"padding-left:5px;padding-right:5px;\" href=\"javascript:User.Delete('"+cl+"');\">删除</a>";
               jQuery("#main-table").jqGrid('setRowData', ids[i],
                   {
             	  	actions : be + de 
@@ -124,11 +124,6 @@ User.List = function (){
 			return {userId : postdata};
 		}
 	});
-}
-
-function delTableRow(cl){
-	$("#main-table").jqGrid('delGridRow', cl);
-	$("#main-table").trigger("reloadGrid");
 }
 
 //打开添加用户
@@ -251,7 +246,6 @@ User.UpdatePassword = function (newPassword){
 }
 
 //删除用户
-/*
 User.Delete = function (userId){
 	layer.confirm('确定要删除用户吗?', {icon: 3, title:'提示'}, function(index){
 		$.post(CTX_PATH + "/auth/users/delete", {
@@ -259,7 +253,7 @@ User.Delete = function (userId){
 		},function(msg) {
 			var result = JSON.parse(msg);
 			if(result.resultCode == '200'){
-				console.log(result.data);
+				$("#main-table").trigger("reloadGrid");
 			} else {
 				alert("程序异常");
 			}
@@ -269,4 +263,3 @@ User.Delete = function (userId){
 		layer.close(index);
 	});
 }
-*/

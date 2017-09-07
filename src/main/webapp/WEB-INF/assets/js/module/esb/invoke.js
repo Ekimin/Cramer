@@ -1,7 +1,5 @@
 Invoke = {};
 
-var ESB_PATH = "http://localhost:16060/esb";
-
 //定时器编号
 Invoke.timerId = 0;
 
@@ -75,6 +73,7 @@ Invoke.sendService = function (){
 				setTimeout(Invoke.getResult, 2000);
 			} else {
 				$("#status").text("调用失败");
+				allowInput();
 			}
 		}
 	);
@@ -94,9 +93,10 @@ Invoke.getTraces = function (){
 				$("#list").text(text);
 				$("#list").scrollTop($("#list")[0].scrollHeight);
 				if(messages[messages.length-1].no == '200'){
-					Invoke.getResult();
 					clearInterval(Invoke.timerId);
+					Invoke.getResult();
 					allowInput();
+					setTimeout(100,function(){});
 				}
 			}
 		);
@@ -123,7 +123,7 @@ Invoke.getResult = function (){
 					}
 					
 					if(data.result != null && data.result != ""){
-						$("#list").text($("#list").text()+"返回结果：\r\n"+data.result.toString());
+						$("#list").text($("#list").text()+"返回结果：\r\n"+data.result.toString()+"\r\n");
 						$("#list").scrollTop($("#list")[0].scrollHeight);
 					}
 				} else {

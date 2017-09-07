@@ -58,7 +58,7 @@
 				</section>
 				<section class="col col-9 ">
 					<label class="input"> 
-						<input type="text" id="title" name="title" value="{{receiver}}" placeholder="收件人">
+						<input type="text" id="receiver" name="receiver" value="{{receiver}}" placeholder="收件人">
 					</label>
 				</section>
 			</div>
@@ -78,13 +78,7 @@
 
 		<footer>
 			<button type="button" class="btn"onClick="layer.close(layer.index);">取消</button>
-			<button type="submit" class="btn btn-primary" onClick="
-				{{if id != null}}
-					WebMail.Update($('#webmail-form').serialize())
-				{{else}}
-					WebMail.Add($('#webmail-form').serialize())
-				{{/if}}
-			">保存</button>
+			<button type="submit" class="btn btn-primary" onClick="WebMail.Send($('#webmail-form').serialize());">发送</button>
 		</footer>
 	</form>
 </script>

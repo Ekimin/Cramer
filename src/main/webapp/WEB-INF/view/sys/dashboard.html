@@ -854,7 +854,7 @@
 		
 		    function update() {
 		        if ($on == true) {
-		        	$.when($.post("http://localhost:16060/http/manger/status/get")).done(function(dd){
+		        	$.when($.post(ESB_PATH+"/manger/status/get")).done(function(dd){
 		        		data = data.slice(1);
 		        		var resultx = JSON.parse(dd);
 		        		data.push(resultx.data.queueSize);
