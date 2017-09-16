@@ -89,6 +89,7 @@ WebMail.OpenSend = function() {
 		closeBtn : 1,
 		content : html
 	});
+	$("#receiver").cramerSelUsers();
 }
 
 // 发送站内信

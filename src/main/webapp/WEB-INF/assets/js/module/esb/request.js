@@ -9,6 +9,9 @@ Request.Search = function(){
 	if($("#sel-service").val() != ""){
 		condition.serviceCode = $("#sel-service").val();
 	}
+	if($("#sel-service").val() == "" && $("#sel-module").val() != ""){
+		condition.module = $("#sel-module").val();
+	}
 	if($("#beginTime").datepicker("getDate") != null){
 		condition.beginTime = Date.parse($("#beginTime").datepicker("getDate"));
 	}
@@ -99,7 +102,7 @@ Request.List = function(postData){
 		{edit : false,add : false,del : false,search:false}
 	);
 	
-	$("#main-table").jqGrid().setGridParam({'postData':postData});
+	$("#main-table").jqGrid().setGridParam({'postData':postData, 'page':1,});
 	$("#main-table").jqGrid().trigger('reloadGrid');
 }
 
@@ -152,24 +155,68 @@ Request.OpenInfoView = function(questId) {
 }
 
 //获得服务信息列表
-Request.getServices = function(module){
+Request.getServices = function(){
+	var $selModule = $("#sel-module");
+	var $selService = $("#sel-service");
+	var modules, services;
 	$.ajax({
-        type: "POST",
-        url: ESB_PATH + "/manger/services/list",
-        data: {module : module},
-        async: false,
-        success: function(msg){
-        	var result = JSON.parse(msg);
-			services = result.data;
+		type : "GET",
+		url : ESB_PATH + "/manger/modules/list",
+		async : false,
+		dataType : "json",
+		success : function(result) {
 			if (result.statusCode == '200') {
-				var html = template('his_sel_service_tpl', result);
-				$("#sel-service").html(html);
+				modules = result.data;
+				var html = "<option value=''>全部模块</option>"
+				for (var i = 0; i < modules.length; i++) {
+					html += "<option value='" + modules[i].module + "'>"
+							+ modules[i].name + "</option>"
+				}
+				$selModule.html(html);
+				$selModule.select2();
 			} else {
-				layer.msg('程序异常', {
+				layer.msg('系统错误', {
 					icon : 2
 				});
+				return;
 			}
-        }
-    });
+		}
+	});
+	$.ajax({
+		type : "GET",
+		url : ESB_PATH + "/manger/services/list",
+		async : false,
+		dataType : "json",
+		success : function(result) {
+			if (result.statusCode == '200') {
+				services = result.data;
+				var html = "<option value=''>全部服务</option>"
+				for (var i = 0; i < services.length; i++) {
+					html += "<option value='" + services[i].serviceCode + "'>"
+							+ services[i].serviceName + "</option>"
+				}
+				$selService.html(html);
+				$selService.select2();
+			} else {
+				layer.msg('系统错误', {
+					icon : 2
+				});
+				return;
+			}
+		}
+	});
+
+	//选择模块后事件
+	$selModule.on("change", function() {
+		var html = "<option value=''>全部服务</option>"
+		for (var i = 0; i < services.length; i++) {
+			if (services[i].module == $selModule.val() || $selModule.val()=="") {
+				html += "<option value='" + services[i].serviceCode + "'>"
+						+ services[i].serviceName + "</option>"
+			}
+		}
+		$selService.html(html);
+		$selService.select2();
+	});
 }
 

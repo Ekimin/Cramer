@@ -127,41 +127,6 @@ function getDateDesc(time){
 	}
 }
 
-/*自定义组件*/
-(function ($) {  
-    $.fn.departmentZtree = function (options) {
-    	$sel = $(this);
-    	var defualts = {
-    		callback : null
-    	}
-    	options = $.extend({}, defualts, options);
-    	
-    	var callback = options.callback;
-    	this.init = function(){
-    		var zTreeObj;
-    		var setting = {};
-    		setting.callback = {};
-    		setting.callback.onClick = callback;
-    		
-    		$.post(CTX_PATH+'/auth/departments/tree',{},
-    			function(result){
-    				var data = JSON.parse(result).data;
-    				zTreeObj = $.fn.zTree.init($sel, setting, data);
-    				var nodes = zTreeObj.getNodes();
-    				if (nodes.length>0) {
-    					zTreeObj.selectNode(nodes[0]);
-    					zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, nodes[0]);
-    				}
-    			}
-    		);
-    		
-    	}
-    	this.init();
-    	return this;
-    }
-})(jQuery);
-
-
 //获取参数
 function GetQueryString(name)
 {
