@@ -9,20 +9,29 @@
 				<div>
 					<div class="jarviswidget-editbox"></div>
 					<div class="widget-body ">
-						<form action="" class="smart-form ">
+						<form action="" class="smart-form " >
 							<div class="row" >
-								<label class="label col col-1"  style="padding-left:20px;">请选择服务：</label>
-						        <section class="col col-3">
-						            <label class="select"> 
-									<select id="sel-service" name="sel-service" class="valid">
-									</select>  
-									<i></i> 
-									</label>
-								</section>
+								<div id="sel-service-panel">
+									<label class="label col col-1"  style="padding-left:20px;">请选择服务：</label>
+									<section class="col col-4" >
+							            <label class="select" > 
+										<select id="sel-module" name="sel-module" class="select2"  style="width:110px; float:left; margin-right:5px;">
+										</select>
+										</label>
+										<label class="select" > 
+										<select id="sel-service" name="sel-service" class="select2" style="width:190px; float:left;">
+										</select>  
+										</label>
+									</section>
+								</div>
 								<label class="label col col-1"  >时间范围：</label>
-								<lable class="input col col-2"><input id="beginTime" type="text" class="input-sm date-picker"></lable>
+								<section class="col col-2" >
+									<lable class="input "><input id="beginTime" type="text" class="input-sm date-picker"></lable>
+								</section>
 								<label class="label" style="float:left;padding-top:6px;">—</label>
-								<lable class="input col col-2"><input id="endTime" type="text" class="input-sm date-picker" ></lable>
+								<section class="col col-2" >
+									<lable class="input "><input id="endTime" type="text" class="input-sm date-picker" ></lable>
+								</section>
 								<a class="btn btn-primary btn-sm" href="javascript:Request.Search();" id="btn-start"><i class="fa fa-search"></i> 搜索</a>
 							</div>
 						</form>
@@ -31,7 +40,6 @@
 								
 							</table>
 						</div>
-
 						<input id="page-num" type="hidden" value="1" /> 
 						<input id="page-size" type="hidden" value="10" />
 						<ul id="pager" class="pagination"></ul>
@@ -68,13 +76,6 @@
 </form>
 </script>
 
-<script id="his_sel_service_tpl" type="text/html">
-<option value="">全部</option>
-{{each data as value i}}
-	<option value="{{value.serviceCode}}">{{value.serviceName}}</option>  
-{{/each}}
-</script>
-
 <script src="js/module/esb/request.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -100,7 +101,7 @@ $(document).ready(function(){
 	    var endTime = e.date;  
 	    $('#beginTime').datepicker('setEndDate',endTime);  
 	});
-	Request.getServices("");
+	Request.getServices();
 	
 	//默认展示近七天
 	var now = Date.parse(new Date());
@@ -108,10 +109,8 @@ $(document).ready(function(){
 	$("#beginTime").datepicker("setDate", last);
 	$("#endTime").datepicker("setDate", "@");
 	
-	var condition = {};
 	if(GetQueryString("serviceCode") != null){
-		$("#sel-service").val(GetQueryString("serviceCode"));
-		$("#sel-service").attr("disabled",true);
+		$("#sel-service-panel").hide();
 		$("#beginTime").datepicker("setDate", "");
 		$("#endTime").datepicker("setDate", "");
 	}
