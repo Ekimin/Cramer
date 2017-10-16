@@ -137,4 +137,4 @@ function GetQueryString(name)
 }
 
 //ESB地址
-var ESB_PATH = "http://localhost:16060/esb";
+var ESB_PATH = sessionStorage.getItem("ESB_PATH");
