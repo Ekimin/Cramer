@@ -110,6 +110,7 @@ $(document).ready(function(){
 	$("#endTime").datepicker("setDate", "@");
 	
 	if(GetQueryString("serviceCode") != null){
+		$("#sel-service").val(GetQueryString("serviceCode"));
 		$("#sel-service-panel").hide();
 		$("#beginTime").datepicker("setDate", "");
 		$("#endTime").datepicker("setDate", "");

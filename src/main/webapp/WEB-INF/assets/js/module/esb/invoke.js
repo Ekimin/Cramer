@@ -166,8 +166,8 @@ Invoke.getResult = function (){
 						case '1400':$("#status").text("请求失败");break;
 					}
 					
-					if(data.result != null && data.result != ""){
-						$("#list").text($("#list").text()+"返回结果：\r\n"+data.result.toString()+"\r\n");
+					if(data.result != null && data.result != "" && $("#list").text().indexOf("##########返回结果##########：")<0){
+						$("#list").text($("#list").text()+"##########返回结果##########：\r\n"+data.result.toString()+"\r\n");
 						$("#list").scrollTop($("#list")[0].scrollHeight);
 					}
 				} else {

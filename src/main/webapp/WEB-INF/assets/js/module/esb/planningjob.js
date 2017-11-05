@@ -48,7 +48,7 @@ PlanningJob.List = function(){
 							break;
 						case 3:desc="每月";
 							for(var i=0; i<rowObject.jobRuleValues.length;i++){
-								desc += rowObject.jobRuleValues[i]+'，';
+								desc += rowObject.jobRuleValues[i]+'日，';
 							}
 							desc += "时间："+parseInt(rowObject.jobRuleTime/60) + '时'+rowObject.jobRuleTime%60+'分;';
 							break;
